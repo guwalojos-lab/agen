@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Agus Brilink</title>
+<title>Nama Aplikasi</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&family=IBM+Plex+Sans:wght@400;500&display=swap">
 <style>
 :root{--bg:#f1f4f2;--card:#fff;--ink:#12261f;--mut:#5d6f67;--line:#d5ddd8;--acc:#0e6b4f;--accT:#fff;--gain:#0e6b4f;--loss:#b3402a;--soft:#e3efe9;
@@ -25,6 +25,13 @@ h2{font-size:17px;margin:0 0 10px}
 .big{font-size:22px;font-weight:800;display:block}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
 .stats .big{font-size:18px}
+.stats.dua{grid-template-columns:repeat(2,1fr)}
+.untung{background:#ffd21f;color:#1a1400;border-radius:14px;padding:18px 14px;margin-bottom:12px;text-align:center;box-shadow:0 4px 0 #b38f00}
+.untung .lbl{display:block;color:#4a3a00;font-size:14px;font-weight:600;letter-spacing:.3px}
+.untung .big{font-size:36px;color:#1a1400;line-height:1.2}
+.untung small{color:#4a3a00}
+.untung.rugi{background:#d93a22;color:#fff;box-shadow:0 4px 0 #8f2412}
+.untung.rugi .lbl,.untung.rugi .big,.untung.rugi small{color:#fff}
 .gain{color:var(--gain)}.loss{color:var(--loss)}
 label{display:block;font-size:13px;color:var(--mut);margin:10px 0 4px}
 input,select{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:11px;min-height:44px}
@@ -48,7 +55,7 @@ button.sm{padding:4px 10px;min-height:32px;font-size:13px}
 </head>
 <body>
 <main>
-<h1 id="appName">Agus Brilink</h1>
+<h1 id="appName">Nama Aplikasi</h1>
 <p class="sub" id="tgl"></p>
 
 <div class="tabs" role="tablist">
@@ -63,11 +70,12 @@ button.sm{padding:4px 10px;min-height:32px;font-size:13px}
   <div><small>Saldo rekening / EDC</small><span class="big" id="rek">0</span></div>
  </div></div>
 
- <div class="card"><h2>Hari ini</h2><div class="stats">
+ <div class="card"><h2>Hari ini</h2><div class="stats dua">
   <div><span class="lbl">Transaksi</span><span class="big" id="sN">0</span></div>
   <div><span class="lbl">Biaya masuk</span><span class="big" id="sF">0</span></div>
-  <div><span class="lbl">Untung bersih</span><span class="big gain" id="sU">0</span></div>
  </div></div>
+
+ <div class="untung" id="uCard"><span class="lbl">UNTUNG BERSIH HARI INI</span><span class="big" id="sU">Rp 0</span><small>Biaya dari pelanggan dikurangi biaya ke bank</small></div>
 
  <div class="card"><h2>Catat transaksi</h2>
   <label for="jenis">Jenis</label>
@@ -124,7 +132,7 @@ button.sm{padding:4px 10px;min-height:32px;font-size:13px}
 </main>
 
 <script>
-const APP_NAME='Agen Brilink'; // ganti dengan nama aplikasi Anda
+const APP_NAME='Nama Aplikasi'; // ganti dengan nama aplikasi Anda
 const $=id=>document.getElementById(id);
 
 const rp=n=>(n<0?'-':'')+'Rp '+Math.abs(Math.round(n)).toLocaleString('id-ID');
@@ -151,7 +159,7 @@ function render(){
  $('sN').textContent=h.length;
  $('sF').textContent=rp(h.reduce((a,t)=>a+t.fee,0));
  const u=h.reduce((a,t)=>a+t.fee-t.modal,0);
- const su=$('sU');su.textContent=rp(u);su.className='big '+(u<0?'loss':'gain');
+ $('sU').textContent=rp(u);$('uCard').classList.toggle('rugi',u<0);
  $('k0').value=S.k0;$('r0').value=S.r0;
  const q=$('cari').value.toLowerCase();
  const rows=S.tx.slice().reverse().filter(t=>(NAMA[t.j]+' '+t.ket).toLowerCase().includes(q));
@@ -220,4 +228,4 @@ $('tgl').textContent=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'
 render();infoUnduh();
 </script>
 </body>
-</html>
+ </html>
